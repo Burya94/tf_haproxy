@@ -27,6 +27,7 @@ resource "aws_instance" "haproxy" {
   subnet_id                   = "${element(var.subnet_id, count.index)}"
   associate_public_ip_address = true
   source_dest_check           = false
+  security_groups             = ["${aws_security_group.haproxy.id}"]
   depends_on                  = ["aws_security_group.haproxy"]
 
   tags {
