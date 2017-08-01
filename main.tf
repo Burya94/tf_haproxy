@@ -19,13 +19,15 @@ data "template_file" "userdata" {
 }
 
 resource "aws_instance" "haproxy" {
-  count         = 1
-  key_name      = "${var.key_name}"
-  ami           = "${data.aws_ami.centos7.id}"
-  instance_type = "${var.instype}"
-  user_data     = "${data.template_file.userdata.rendered}"
-  subnet_id     = "${element(var.subnet_id, count.index)}"
-  depends_on    = ["aws_security_group.haproxy"]
+  count                       = 1
+  key_name                    = "${var.key_name}"
+  ami                         = "${data.aws_ami.centos7.id}"
+  instance_type               = "${var.instype}"
+  user_data                   = "${data.template_file.userdata.rendered}"
+  subnet_id                   = "${element(var.subnet_id, count.index)}"
+  associate_public_ip_address = true
+  source_dest_check           = false
+  depends_on                  = ["aws_security_group.haproxy"]
 
   tags {
     Name = "${count.index}.HAProxy"
@@ -40,6 +42,27 @@ resource "aws_security_group" "haproxy" {
   ingress {
     to_port     = 22
     from_port   = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    to_port     = 0
+    from_port   = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
