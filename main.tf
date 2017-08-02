@@ -15,7 +15,9 @@ data "aws_ami" "centos7" {
 data "template_file" "userdata" {
   template = "${file("${path.module}/${var.path_to_file}")}"
 
-  vars {}
+  vars {
+      haproxy_ip = "${aws_instance.haproxy.private_ip}"
+  }
 }
 
 resource "aws_instance" "haproxy" {
@@ -77,7 +79,7 @@ data "template_file" "logstash" {
   template = "${file("${path.module}/${var.path_to_lstash}")}"
 
   vars {
-    proxy_ip = "${aws_instance.haproxy.private_ip}"
+    proxy_dns = "${aws_instance.haproxy.private_dns}"
   }
 }
 
