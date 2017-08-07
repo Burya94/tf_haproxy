@@ -20,5 +20,21 @@ Facter.add(:role) do
 end
 EOF
 echo "export FACTERLIB=/root/" >> /root/.bash_profile
-echo "${proxy_dns}" >> /root/proxy_dns
+cat >> /root/logstash_config << EOF
+input{
+    file{
+        type => "some_access_log"
+        path => [ "/var/log/logstash/logstash.log"]
+        start_position => "end"
+        stat_interval => 1
+        discover_interval => 30
+    }
+}
+output{
+    elasticsearch {
+        hosts => [ "${proxy_dns}:9200" ]
+    }
+}
+EOF
+
 #-----------------------------------------------------------
