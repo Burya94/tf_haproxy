@@ -16,7 +16,7 @@ data "template_file" "userdata" {
   template = "${file("${path.module}/${var.path_to_file}")}"
 
   vars {
-      haproxy_ip = "${haproxy_ip}"
+      haproxy_ip = "${var.haproxy_ip}"
       }
 
 }
@@ -80,9 +80,9 @@ data "template_file" "logstash" {
   template = "${file("${path.module}/${var.path_to_lstash}")}"
 
   vars {
-    proxy_dns = "${haproxy_ip}"
-    puppet_ip = "${puppet_ip}"
-    dns_name = "${dns_name}"
+    proxy_dns = "${var.haproxy_ip}"
+    puppet_ip = "${var.puppet_ip}"
+    dns_name = "${var.dns_name}"
   }
 }
 
