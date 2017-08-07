@@ -28,6 +28,7 @@ resource "aws_instance" "haproxy" {
   instance_type               = "${var.instype}"
   user_data                   = "${data.template_file.userdata.rendered}"
   subnet_id                   = "${element(var.subnet_id, count.index)}"
+  private_ip                  = "${var.private_ip}"
   associate_public_ip_address = true
   source_dest_check           = false
   security_groups             = ["${aws_security_group.haproxy.id}"]
