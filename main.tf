@@ -17,7 +17,7 @@ data "template_file" "userdata" {
 
   vars {
       haproxy_ip = "${aws_instance.haproxy.private_ip}"
-  }
+      }
 }
 
 resource "aws_instance" "haproxy" {
@@ -80,6 +80,8 @@ data "template_file" "logstash" {
 
   vars {
     proxy_dns = "${aws_instance.haproxy.private_dns}"
+    puppet_ip = "${puppet_ip}"
+    dns_name = "${dns_name}"
   }
 }
 

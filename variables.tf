@@ -21,3 +21,5 @@ variable "vpc_id" {}
 variable "subnet_priv_id" {
   type = "list"
 }
+variable "puppet_ip" {}
+variable "dns_name" {}
