@@ -16,8 +16,9 @@ data "template_file" "userdata" {
   template = "${file("${path.module}/${var.path_to_file}")}"
 
   vars {
-      haproxy_ip = "${aws_instance.haproxy.private_ip}"
+      haproxy_ip = "${haproxy_ip}"
       }
+
 }
 
 resource "aws_instance" "haproxy" {
@@ -79,7 +80,7 @@ data "template_file" "logstash" {
   template = "${file("${path.module}/${var.path_to_lstash}")}"
 
   vars {
-    proxy_dns = "${aws_instance.haproxy.private_dns}"
+    proxy_dns = "${haproxy_ip}"
     puppet_ip = "${puppet_ip}"
     dns_name = "${dns_name}"
   }
@@ -93,7 +94,7 @@ resource "aws_instance" "logstash" {
   user_data       = "${data.template_file.logstash.rendered}"
   subnet_id       = "${element(var.subnet_priv_id, count.index)}"
   security_groups = ["${aws_security_group.logstash.id}"]
-  depends_on      = ["aws_security_group.logstash"]
+  depends_on      = ["aws_security_group.logstash", "aws_instance.haproxy"]
 
   tags {
     Name = "${count.index}.logstash"

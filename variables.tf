@@ -23,3 +23,6 @@ variable "subnet_priv_id" {
 }
 variable "puppet_ip" {}
 variable "dns_name" {}
+variable "haproxy_ip"{
+    default = "10.231.230.10"
+}
