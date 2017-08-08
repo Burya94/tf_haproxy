@@ -6,7 +6,7 @@ n=`expr \$number_of_lines - 62`
 tac /etc/haproxy/haproxy.cfg | sed "1,\$n{d}" | tac
 cat >> /etc/haproxy/haproxy.cfg << EOF
 frontend  to_proxy
-    bind ${haproxy_ip}:9200 
+    bind ${haproxy_ip}:9200
     default_backend els
 
 backend els
@@ -17,3 +17,6 @@ backend els
 EOF
 systemctl start haproxy
 systemctl enable haproxy
+sed -i -e "s/#ClientAliveInterval 0/ClientAliveInterval 300/" '/etc/ssh/sshd_config'
+sed -i -e "s/#ClientAliveCountMax 2/ClientAliveCountMax 10/" '/etc/ssh/sshd_config'
+systemctl restart sshd

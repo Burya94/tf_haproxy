@@ -75,6 +75,12 @@ resource "aws_security_group" "haproxy" {
   tags {
     Name = "HAProxy secgroup"
   }
+  ingress {
+      from_port = 9200
+      to_port   = 9200
+      protocol  = "tcp"
+      cidr_blocks = ["10.231.0.0/16"]
+  }
 }
 
 data "template_file" "logstash" {
