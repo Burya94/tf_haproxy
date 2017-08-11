@@ -1,9 +1,6 @@
 #!/bin/bash
 yum install haproxy -y
 setsebool -P haproxy_connect_any=1
-number_of_lines=`wc -l /etc/haproxy/haproxy.cfg | cut -d' '  -f1`
-n=`expr \$number_of_lines - 62`
-tac /etc/haproxy/haproxy.cfg | sed "1,\$n{d}" | tac
 cat >> /etc/haproxy/haproxy.cfg << EOF
 frontend  to_proxy
     bind ${haproxy_ip}:9200

@@ -119,7 +119,12 @@ resource "aws_security_group" "logstash" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
+  ingress {
+    from_port    = 0
+    to_port      = 0
+    protocol     = "-1"
+    cidr_blocks   = ["10.231.240.0/24"]
+  }
   egress {
     to_port     = 0
     from_port   = 0
