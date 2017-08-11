@@ -98,6 +98,7 @@ resource "aws_instance" "logstash" {
   key_name        = "${var.key_name}"
   ami             = "${data.aws_ami.centos7.id}"
   instance_type   = "${var.instype}"
+  iam_instance_profile = "${aws_iam_instance_profile.logstash_profile.name}"
   user_data       = "${data.template_file.logstash.rendered}"
   subnet_id       = "${element(var.subnet_priv_id, count.index)}"
   security_groups = ["${aws_security_group.logstash.id}"]
