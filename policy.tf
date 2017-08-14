@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "cross_role_access" {
       ]
 
       resources =[
-          "arn:aws:kinesis:*:${var.account_id}:stream/${stream_name}",
+          "arn:aws:kinesis:*:${var.account_id}:stream/${var.stream_name}",
       ]
   }
 }
