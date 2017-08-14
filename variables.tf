@@ -26,5 +26,5 @@ variable "dns_name" {}
 variable "haproxy_ip"{
     default = "10.231.230.10"
 }
-variable "role_name" {}
+variable "stream_name" {}
 variable "account_id" {}

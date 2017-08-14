@@ -2,11 +2,11 @@
 data "aws_iam_policy_document" "cross_role_access" {
    statement {
       actions =[
-          "sts:AssumeRole",
+          "kinesis:*",
       ]
 
       resources =[
-          "arn:aws:iam::${var.account_id}:role/${var.role_name}",
+          "arn:aws:kinesis:*:${var.account_id}:stream/${stream_name}",
       ]
   }
 }
