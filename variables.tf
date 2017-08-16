@@ -28,3 +28,4 @@ variable "haproxy_ip"{
 }
 variable "stream_name" {}
 variable "account_id" {}
+variable "table_name"{}

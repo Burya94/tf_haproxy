@@ -1,5 +1,5 @@
 
-data "aws_iam_policy_document" "cross_role_access" {
+data "aws_iam_policy_document" "dynamo_kinesis" {
    statement {
       actions =[
           "kinesis:*",
@@ -9,12 +9,21 @@ data "aws_iam_policy_document" "cross_role_access" {
           "arn:aws:kinesis:*:${var.account_id}:stream/${var.stream_name}",
       ]
   }
+  statement {
+      action = [
+          "dynamodb:*"
+      ]
+
+      resources = [
+          "*"
+      ]
+  }
 }
 
-resource "aws_iam_policy" "cross_acc_access_policy" {
-  name        = "terraform_access_to_kinesis_in_other_acc"
-  description = "access_to_role"
-  policy      = "${data.aws_iam_policy_document.cross_role_access.json}"
+resource "aws_iam_policy" "dynamo_kinesis" {
+  name        = "terraform_access_to_kinesis_dynamo"
+  description = "access_to_kinesis_dynamo"
+  policy      = "${data.aws_iam_policy_document.dynamo_kinesis.json}"
 }
 
 resource "aws_iam_role" "logstash" {
@@ -36,12 +45,12 @@ resource "aws_iam_role" "logstash" {
 }
 EOF
 
-  depends_on = ["aws_iam_policy.cross_acc_access_policy"]
+  depends_on = ["aws_iam_policy.dynamo_kinesis"]
 }
 
 resource "aws_iam_role_policy_attachment" "logstash_attach" {
   role       = "${aws_iam_role.logstash.name}"
-  policy_arn = "${aws_iam_policy.cross_acc_access_policy.arn}"
+  policy_arn = "${aws_iam_policy.dynamo_kinesis.arn}"
   depends_on = ["aws_iam_role.logstash"]
 }
 
