@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "dynamo_kinesis" {
       ]
   }
   statement {
-      action = [
+      actions = [
           "dynamodb:*"
       ]
 
